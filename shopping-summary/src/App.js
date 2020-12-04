@@ -6,15 +6,18 @@ import Taxes from './components/Taxes/Taxes'
 import Total from './components/Total/Total'
 import PurchaseDetails from './components/PurchaseDetails/PurchaseDetails'
 import DiscountCode from './components/DiscountCode/DiscountCode'
+import  ProductsList  from './components/ProductsList/ProductsList'
 import { connect } from 'react-redux'
 import { handleChange } from './actions/promoCodeActions'
 import './App.css';
+import axios from 'axios'
 
 
 class App extends Component{
   constructor(props) {
     super(props)
     this.state = {
+      products: null,
       total: 100,
       savings: -3.55,
       taxes: 0,
@@ -23,15 +26,16 @@ class App extends Component{
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setState({
-      taxes: (this.state.total + this.state.savings) * 0.075
+      taxes: (this.state.total + this.state.savings) * 0.075,
     },
     function() {
       this.setState({
         totalFinale: this.state.total + this.state.savings + this.state.taxes
       })
     })
+    console.log('products', this.state.products);
   }
 
   giveDiscountHandler = () => {
@@ -51,6 +55,9 @@ class App extends Component{
   render(){
     return (
     <div className="container">
+            <Container className="items" >
+      <ProductsList  />
+        </Container>
       <Container className="purchase-card" >
         <Subtotal price={this.state.total.toFixed(2)} />
         <Savings price={this.state.savings}/>
